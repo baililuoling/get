@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+    <div id="app">
+      <span v-text="msg"></span>
+      <test-com v-model='msg2'></test-com>
+    </div>
+	</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  Vue.component('test-com',{
+    props:{
+      value:{
+        type:String
+      }
+    },
+    data:function(){
+      return {
+        cmsg:'bbb'
+      }
+    },
+    template:`<div>123</div>`,
+    mounted(){
+      console.log(this.$parent._data.msg)//获取父组件的data数据
+      console.log(this.$parent.$options.methods.com)//调用父组件的methods方法
+      console.log(this.value)
+    },
+    methods:{
+      ccom(){
+        console.log(2222)
+      }
+    }
+  })
+  var app = new Vue({
+    el:'#app',
+    data:{
+      msg:'1916',
+      msg2:'dadsd'
+    },
+    mounted(){
+      console.log(this.$children[0]._data.cmsg)//获取子组件的data数据
+      console.log(this.$children[0].$options.methods.ccom)//调用子组件的methods方法
+    },
+    methods:{
+      com(){
+        console.log(1111)
+      }
+    }
+  })
+  
+  function pro(){
+    return new Promise((resolve,reject)=>{
+      setTimeout(()=>{
+        resolve('aaa')
+      },1000)
+    })
+  } 
+  var asy = async function(){
+    console.log('1111')
+    var res = await pro()
+    console.log(res)
+    console.log('2222')
+  }
+  asy()
+  
+  var arr = ['a','b','c']
+  console.log(Object.prototype.toString.call(arr))
+  
+  //封装一个准确判断数据类型的函数
+  function getType(obj){
+    let type  = typeof obj;
+    if(type != "object"){
+      return type;
+    }
+    return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, '$1');
+  }
+  console.log(getType(arr))
+  console.log(arr.find((item,index)=>item==='b'))
+</script>
